@@ -14,7 +14,6 @@ def call(Map config = [:]) {
       set -e
       docker pull ${image}
       docker run --rm \\
-        -e SOFTFAIL=${softfail} \\
         -e ACCUKNOX_ENDPOINT="\$ACCUKNOX_ENDPOINT" \\
         -e ACCUKNOX_LABEL="\$ACCUKNOX_LABEL" \\
         -e ACCUKNOX_TOKEN="\$ACCUKNOX_TOKEN" \\
