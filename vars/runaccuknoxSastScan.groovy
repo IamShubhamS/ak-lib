@@ -1,6 +1,6 @@
 def call(Map config = [:]) {
     String image = config.get('image', 'gcshubham/accuknox-sast-jenkins:0.1')
-    String softfail = config.get('softfail', 'true').toString()
+
     if (!env.ACCUKNOX_ENDPOINT?.trim()) {
         error('ACCUKNOX_ENDPOINT is required')
     }
@@ -10,6 +10,7 @@ def call(Map config = [:]) {
     if (!env.ACCUKNOX_TOKEN?.trim()) {
         error('ACCUKNOX_TOKEN is required')
     }
+
     sh """
       set -e
       docker pull ${image}
