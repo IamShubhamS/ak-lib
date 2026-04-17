@@ -1,5 +1,5 @@
 def call(Map config = [:]) {
-    String image = config.get('image', 'gcshubham/accuknox-sast-jenkins:0.5')
+    String image = config.get('image', 'gcshubham/accuknox-sast-jenkins:0.4')
 
     if (!env.ACCUKNOX_ENDPOINT?.trim()) {
         error('ACCUKNOX_ENDPOINT is required')
