@@ -11,14 +11,28 @@ def call(Map config = [:]) {
         error('ACCUKNOX_TOKEN is required')
     }
 
-    sh """
-      set -e
-      docker pull ${image}
-      docker run --rm \\
-        -e ACCUKNOX_ENDPOINT="\$ACCUKNOX_ENDPOINT" \\
-        -e ACCUKNOX_LABEL="\$ACCUKNOX_LABEL" \\
-        -e ACCUKNOX_TOKEN="\$ACCUKNOX_TOKEN" \\
-        -v "\$WORKSPACE:/workspace" \\
-        ${image}
-    """
+      if (isUnix()) {
+        sh """
+          set -e
+          docker pull ${image}
+          docker run --rm \\
+            -e ACCUKNOX_ENDPOINT="\$ACCUKNOX_ENDPOINT" \\
+            -e ACCUKNOX_LABEL="\$ACCUKNOX_LABEL" \\
+            -e ACCUKNOX_TOKEN="\$ACCUKNOX_TOKEN" \\
+            -v "\$WORKSPACE:/workspace" \\
+            ${image}
+        """
+    } else {
+        // Windows - use PowerShell
+        powershell """
+          \$ErrorActionPreference = 'Stop'
+          docker pull ${image}
+          docker run --rm `
+            -e ACCUKNOX_ENDPOINT="\$env:ACCUKNOX_ENDPOINT" `
+            -e ACCUKNOX_LABEL="\$env:ACCUKNOX_LABEL" `
+            -e ACCUKNOX_TOKEN="\$env:ACCUKNOX_TOKEN" `
+            -v "\${env:WORKSPACE}:/workspace" `
+            ${image}
+        """
+    }
 }
